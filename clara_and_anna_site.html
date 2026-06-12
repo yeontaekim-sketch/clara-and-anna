@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clara &amp; Anna — Sermons &amp; Mission</title>
+<style>
+  :root{
+    --ink:#0f172a; --muted:#64748b; --line:#e6e9f0; --bg:#f7f8fb; --card:#ffffff;
+    --accent:#3b5bdb; --accent-soft:#eaeefc; --ok:#16a34a; --ok-soft:#e8f6ec;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Noto Sans KR",-apple-system,"Segoe UI",sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  .serif{font-family:"Noto Serif","Georgia",serif;}
+  a{color:inherit;text-decoration:none;}
+
+  /* top bar */
+  .topbar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.85);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);display:flex;align-items:center;gap:20px;padding:14px 22px;}
+  .brand{font-family:"Noto Serif",serif;font-size:21px;font-weight:700;letter-spacing:.3px;}
+  .brand .amp{color:var(--accent);font-style:italic;}
+  .topnav{margin-left:auto;display:flex;gap:6px;}
+  .topnav button{background:none;border:none;color:var(--muted);font-size:14px;font-weight:600;
+    padding:8px 14px;border-radius:10px;cursor:pointer;}
+  .topnav button:hover{color:var(--ink);background:#eef1f7;}
+  .topnav button.active{color:var(--accent);background:var(--accent-soft);}
+
+  /* hero */
+  .hero{text-align:center;padding:56px 20px 30px;}
+  .hero .kicker{font-size:12px;letter-spacing:5px;color:var(--accent);text-transform:uppercase;font-weight:700;}
+  .hero h1{font-family:"Noto Serif",serif;font-size:50px;margin:12px 0 8px;font-weight:700;letter-spacing:.5px;}
+  .hero h1 .amp{color:var(--accent);font-style:italic;}
+  .hero p{margin:0;color:var(--muted);font-size:15.5px;}
+
+  .wrap{max-width:1180px;margin:0 auto;padding:8px 18px 70px;}
+
+  /* year selector */
+  .years{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:18px 0 6px;}
+  .years button{border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:700;
+    padding:9px 18px;border-radius:30px;cursor:pointer;font-size:14.5px;transition:all .12s;}
+  .years button:hover{border-color:var(--accent);color:var(--accent);}
+  .years button.active{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 6px 16px rgba(59,91,219,.28);}
+
+  .progress{text-align:center;color:var(--muted);font-size:13px;margin:10px 0 22px;}
+  .progress b{color:var(--ink);}
+
+  /* grid table */
+  .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:16px;background:var(--card);}
+  table{border-collapse:collapse;width:100%;min-width:980px;}
+  thead th{position:sticky;top:0;background:#0f172a;color:#fff;font-size:12.5px;font-weight:600;
+    padding:13px 10px;text-align:center;white-space:nowrap;}
+  thead th.wk{text-align:left;padding-left:18px;}
+  thead th small{display:block;color:#9fb0c8;font-weight:400;font-size:10.5px;margin-top:2px;}
+  tbody td{border-top:1px solid var(--line);padding:8px 10px;text-align:center;vertical-align:middle;}
+  td.wk{text-align:left;padding-left:18px;white-space:nowrap;}
+  td.wk .wn{font-size:11px;color:var(--muted);}
+  td.wk .wd{font-size:13.5px;font-weight:600;}
+  thead th.tt{text-align:left;}
+  td.tt{text-align:left;max-width:300px;}
+  td.tt .ttko{font-family:"Noto Serif",serif;font-size:14px;color:var(--ink);line-height:1.32;}
+  td.tt .tten{font-size:11.5px;color:var(--muted);line-height:1.3;}
+  td.tt .tte{color:#cdd5e0;}
+  tbody tr:hover{background:#f9fafe;}
+
+  .cell{display:inline-flex;align-items:center;justify-content:center;width:40px;height:30px;border-radius:9px;
+    font-size:13px;transition:all .12s;}
+  .cell.done{background:var(--accent);color:#fff;font-weight:700;}
+  .cell.done:hover{transform:scale(1.12);box-shadow:0 4px 12px rgba(59,91,219,.4);}
+  .cell.empty{background:#f1f3f8;color:#c2cad8;}
+
+  /* mission cards */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:22px;margin-top:8px;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;transition:transform .15s,box-shadow .15s;}
+  .card:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(15,23,42,.12);}
+  .thumb{aspect-ratio:16/9;background:#e7ebf3 center/cover no-repeat;display:flex;align-items:center;justify-content:center;color:#aab6c9;font-size:24px;}
+  .cbody{padding:14px 16px 18px;}
+  .cdate{font-size:12px;color:var(--accent);font-weight:700;}
+  .ctko{font-family:"Noto Serif",serif;font-size:16px;margin:5px 0 3px;line-height:1.35;}
+  .cten{font-size:13px;color:var(--muted);}
+  .empty-msg{text-align:center;color:var(--muted);padding:64px 20px;}
+  .legend{display:flex;gap:18px;justify-content:center;color:var(--muted);font-size:12.5px;margin-top:14px;}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .dot{width:14px;height:14px;border-radius:5px;display:inline-block;}
+
+  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:36px;}
+  footer .serif{color:var(--ink);font-size:15px;}
+  @media(max-width:640px){.hero h1{font-size:38px;}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand">Clara <span class="amp">&amp;</span> Anna</div>
+  <div class="topnav" id="topnav"></div>
+</div>
+
+<div class="hero">
+  <div class="kicker">Sermons &amp; Mission</div>
+  <h1 class="serif">Clara <span class="amp">&amp;</span> Anna</h1>
+  <p>A record of the Word and mission · 2001–2007</p>
+</div>
+
+<div class="wrap">
+  <div id="archive">
+    <div class="years" id="years"></div>
+    <div class="progress" id="progress"></div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr id="thead"></tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <div class="legend">
+      <span><i class="dot" style="background:#3b5bdb"></i> Available — click to watch</span>
+      <span><i class="dot" style="background:#f1f3f8"></i> Coming soon</span>
+    </div>
+  </div>
+
+  <div id="mission" style="display:none;">
+    <div class="grid" id="missionGrid"></div>
+  </div>
+</div>
+
+<footer>
+  <div class="serif">Clara &amp; Anna</div>
+  <div>© 2001–2007 · Sermons &amp; Mission Stories</div>
+</footer>
+
+<!--
+ =====================================================================
+  영상 추가: 아래 ITEMS 에 한 줄씩.
+    type: "clara_ko" | "clara_ensub" | "anna_ko" | "anna_en"   (주간 4칸)
+          또는 "mission"  (선교 이야기 카드)
+    date: "2001-04-01" (일요일 기준)
+    ko/en: 제목,  yt: 유튜브 주소/ID (없으면 "")
+ =====================================================================
+-->
+<script>
+const COLS = [
+  {key:"clara_ko",     label:"Clara",  sub:"Korean"},
+  {key:"clara_ensub",  label:"Clara",  sub:"Eng. Subtitle"},
+  {key:"anna_ko",      label:"Anna",   sub:"Korean (Summary)"},
+  {key:"anna_en",      label:"Anna",   sub:"English"},
+];
+const YEARS = [2001,2002,2003,2004,2005,2006,2007];
+
+const ITEMS = [
+  {type:"clara_ko",    date:"2001-04-01", ko:"사도행전 4장 — 아나니아와 삽비라", en:"Acts 4 — Ananias and Sapphira", yt:""},
+  {type:"clara_ensub", date:"2001-04-01", ko:"사도행전 4장 — 아나니아와 삽비라", en:"Acts 4 — Ananias and Sapphira", yt:""},
+  // mission story example:
+  // {type:"mission", date:"2005-06-12", ko:"몽골 선교 이야기", en:"Mission in Mongolia", yt:"VIDEO_ID"},
+];
+
+let view="archive";
+let activeYear=YEARS[0];
+
+function vid(u){ if(!u)return ""; const m=u.match(/(?:v=|youtu\.be\/|embed\/)([\w-]{11})/); return m?m[1]:(u.length===11?u:""); }
+function pad(n){return String(n).padStart(2,'0');}
+function fmt(d){return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;}
+function sundays(year){const a=[];let d=new Date(year,0,1);while(d.getDay()!==0)d.setDate(d.getDate()+1);
+  while(d.getFullYear()===year){a.push(new Date(d));d.setDate(d.getDate()+7);}return a;}
+
+function buildNav(){
+  const n=document.getElementById('topnav');n.innerHTML='';
+  [["archive","Sermon Archive"],["mission","Mission Stories"]].forEach(([v,t])=>{
+    const b=document.createElement('button');b.textContent=t;if(v===view)b.classList.add('active');
+    b.onclick=()=>{view=v;render();};n.appendChild(b);
+  });
+}
+function buildYears(){
+  const y=document.getElementById('years');y.innerHTML='';
+  YEARS.forEach(yr=>{const b=document.createElement('button');b.textContent=yr;
+    if(yr===activeYear)b.classList.add('active');b.onclick=()=>{activeYear=yr;render();};y.appendChild(b);});
+}
+function buildArchive(){
+  // header
+  const th=document.getElementById('thead');
+  th.innerHTML='<th class="wk">Week</th><th class="tt">Title</th>'+COLS.map(c=>`<th>${c.label}<small>${c.sub}</small></th>`).join('');
+  const tb=document.getElementById('tbody');tb.innerHTML='';
+  const suns=sundays(activeYear); let done=0;
+  suns.forEach((d,i)=>{
+    const ds=fmt(d);
+    const titem=ITEMS.find(x=>x.date===ds && (x.ko||x.en));
+    let row=`<td class="wk"><span class="wn">Week ${i+1}</span><br><span class="wd">${ds}</span></td>`;
+    row+=`<td class="tt">${titem?`<div class="ttko">${titem.ko||''}</div><div class="tten">${titem.en||''}</div>`:'<span class="tte">—</span>'}</td>`;
+    COLS.forEach(c=>{
+      const it=ITEMS.find(x=>x.type===c.key && x.date===ds);
+      const id=it?vid(it.yt):"";
+      if(id){done++;row+=`<td><a class="cell done" target="_blank" title="${(it.ko||'')} / ${(it.en||'')}" href="https://www.youtube.com/watch?v=${id}">▶</a></td>`;}
+      else row+=`<td><span class="cell empty">·</span></td>`;
+    });
+    tb.innerHTML+=`<tr>${row}</tr>`;
+  });
+  document.getElementById('progress').innerHTML=`${activeYear} · 완성 <b>${done}</b> / ${suns.length*COLS.length}칸 (주 ${suns.length}회 × 4)`;
+}
+function buildMission(){
+  const g=document.getElementById('missionGrid');
+  const list=ITEMS.filter(x=>x.type==="mission").sort((a,b)=>b.date.localeCompare(a.date));
+  if(!list.length){g.innerHTML='<div class="empty-msg">선교 이야기가 곧 올라옵니다.<br>Mission stories coming soon.</div>';return;}
+  g.innerHTML='';
+  list.forEach(x=>{const id=vid(x.yt);const el=document.createElement(id?'a':'div');el.className='card';
+    if(id){el.href='https://www.youtube.com/watch?v='+id;el.target='_blank';}
+    const bg=id?`background-image:url(https://img.youtube.com/vi/${id}/hqdefault.jpg)`:'';
+    el.innerHTML=`<div class="thumb" style="${bg}">${id?'':'▶'}</div><div class="cbody">
+      <div class="cdate">${x.date}</div><div class="ctko">${x.ko}</div><div class="cten">${x.en}</div></div>`;
+    g.appendChild(el);});
+}
+function render(){
+  buildNav();
+  document.getElementById('archive').style.display = view==="archive"?"block":"none";
+  document.getElementById('mission').style.display = view==="mission"?"block":"none";
+  if(view==="archive"){buildYears();buildArchive();} else {buildMission();}
+}
+render();
+</script>
+</body>
+</html>
